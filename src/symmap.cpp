@@ -47,6 +47,14 @@ operation exch_out(index_t& ind)
    return operation(false,false); 
 }
 
+operation compl_conj(index_t& ind)
+{
+   freq_sign_change(ind.w1_in);
+   freq_sign_change(ind.w2_in);
+   freq_sign_change(ind.w1_out);
+   return operation(false,true);
+}
+
 operation time_rev(index_t& ind)
 {
    int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
@@ -62,7 +70,34 @@ operation time_rev(index_t& ind)
       int k2_out = sum_mom[ sum_mom[ind.k1_in][ind.k2_in] ] [ sign_change_k_ind_arr[ind.k1_out] ]; // calculate k2_out 
       swap(ind.k1_in, ind.k1_out); 	// swap k1_in and k1_out
       ind.k2_in = k2_out; 		// swap k2_in and k2_out
+
+      swap(ind.s1_in, ind.s2_in);
+      swap(ind.s1_out, ind.s2_out);
       // Note: no operation needed
+   }
+   return operation(false,false);
+}
+
+operation particle_hole(index_t& ind)
+{
+   int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
+   if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
+   {
+      swap(ind.w1_in, ind.w1_out);
+      ind.w2_in = w2_out;
+
+      freq_sign_change(ind.w1_in);
+      freq_sign_change(ind.w2_in);
+      freq_sign_change(ind.w1_out);
+
+      int k2_out = sum_mom[ sum_mom[ind.k1_in][ind.k2_in] ] [ sign_change_k_ind_arr[ind.k1_out] ]; // calculate k2_out 
+      swap(ind.k1_in, ind.k1_out); 	// swap k1_in and k1_out
+      ind.k2_in = k2_out; 		// swap k2_in and k2_out
+
+      swap(ind.s1_in, ind.s2_in);
+      swap(ind.s1_out, ind.s2_out);
+
+      return operation(false,true);
    }
    return operation(false,false);
 }
@@ -73,14 +108,6 @@ operation rot_k(index_t& ind)
    ind.k2_in = rot_k_ind_arr[ind.k2_in];
    ind.k1_out = rot_k_ind_arr[ind.k1_out];
    return operation(false,false);
-}
-
-operation compl_conj(index_t& ind)
-{
-   freq_sign_change(ind.w1_in);
-   freq_sign_change(ind.w2_in);
-   freq_sign_change(ind.w1_out);
-   return operation(false,true);
 }
 
 operation mirror_vert(index_t& ind)

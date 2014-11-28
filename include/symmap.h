@@ -21,12 +21,15 @@ void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vert
 
 // Symmetries
 operation exch_in(index_t& ind);	///< Exchange ingoing lines
-operation rot_k(index_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
-operation compl_conj(index_t& ind);	///< Complex conjugation
 operation exch_out(index_t& ind);	///< Exchange outgoing lines
+operation compl_conj(index_t& ind);	///< Complex conjugation
 operation time_rev(index_t& ind);	///< Time reversal symmetry
+operation particle_hole(index_t& ind);	///< Particle hole symmetry CHECK !!!!!!!!!!!!!!!!!!!!
+
+operation rot_k(index_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
 operation mirror_vert(index_t& ind);	///< Mirror all momenta vertically
 operation mirror_diag(index_t& ind);	///< Mirror all momenta diagonally
+
 
 // Helper functions
 void freq_sign_change(int& ind);	///< Change sign of signle frequency

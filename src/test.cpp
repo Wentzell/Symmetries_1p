@@ -17,13 +17,14 @@ using namespace std;
 int main (int argc, char * argv[])
 {
    // Initialize vector containing all symmetry functions 
-   vector<symm_func_t> symm_func_list;
+   vector<symm_func_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
 
    symm_func_list.push_back(exch_in);
    symm_func_list.push_back(exch_out);
-   symm_func_list.push_back(rot_k);
    symm_func_list.push_back(compl_conj);
    symm_func_list.push_back(time_rev);
+   //symm_func_list.push_back(particle_hole);
+   symm_func_list.push_back(rot_k);
    symm_func_list.push_back(mirror_vert);
    symm_func_list.push_back(mirror_diag);
 
