@@ -1,12 +1,12 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmetries.cpp
- * 	contents:   	See symmetries.h
+ * 	file: 		symmap.cpp
+ * 	contents:   	See symmap.h
  * 
  ****************************************************************************************************/
 
-#include <symmetries.h>
+#include <symmap.h>
 
 
 std::ostream &operator<<(std::ostream& os, const index_t& ind)

@@ -1,15 +1,15 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmetries.h
+ * 	file: 		symmap.h
  * 	contents:  	Use index symmetries of a two-particle vertex tensor to determine a minimal 
  * 			set of independent elements	
  * 
  ****************************************************************************************************/
 
 
-#ifndef SYMMETRIES_H
-#define SYMMETRIES_H
+#ifndef SYMMAP_H
+#define SYMMAP_H
 
 #include <boost/multi_array.hpp>
 

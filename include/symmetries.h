@@ -1,17 +1,17 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmap.h
+ * 	file: 		symmetries.h
  * 	contents:  	For a given set of symmetries, establish the linking between the 
  * 			vertex tensor and the independent couplings	
  * 
  ****************************************************************************************************/
 
 
-#ifndef SYMMAP_H
-#define SYMMAP_H
+#ifndef SYMMETRIES_H
+#define SYMMETRIES_H
 
-#include <symmetries.h>
+#include <symmap.h>
 #include <const.h>
 
 typedef operation (*symm_func_t)(index_t&); 		///< Symmetry function that acts on an index_t object and alters it 

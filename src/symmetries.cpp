@@ -1,12 +1,12 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmap.cpp
- * 	contents:   	see symmap.h
+ * 	file: 		symmetries.cpp
+ * 	contents:   	see symmetries.h
  * 
  ****************************************************************************************************/
 
-#include <symmap.h>
+#include <symmetries.h>
 
 
 void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos )
@@ -38,8 +38,7 @@ operation exch_out(index_t& ind)
    int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
    if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
    {
-      ind.w1_out *= -1;
-      ind.w1_out += ind.w1_in + ind.w2_in;
+      ind.w1_out = w2_out;
       ind.k1_out = sum_mom[ sum_mom[ind.k1_in][ind.k2_in] ] [ sign_change_k_ind_arr[ind.k1_out] ]; // calculate k2_out and assign to k1_out
       swap(ind.s1_out,ind.s2_out);
       return operation(true,false);
@@ -49,10 +48,21 @@ operation exch_out(index_t& ind)
 
 operation compl_conj(index_t& ind)
 {
-   freq_sign_change(ind.w1_in);
-   freq_sign_change(ind.w2_in);
-   freq_sign_change(ind.w1_out);
-   return operation(false,true);
+   int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
+   if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
+   {
+      swap(ind.w1_in, ind.w1_out);
+      ind.w2_in = w2_out;
+
+      freq_sign_change(ind.w1_in);
+      freq_sign_change(ind.w2_in);
+      freq_sign_change(ind.w1_out);
+
+      // Changing all momenta signs is unnecessary since equal to rotating twice by 90 degrees
+
+      return operation(false,true);
+   }
+   return operation(false, false);
 }
 
 operation time_rev(index_t& ind)
@@ -62,10 +72,8 @@ operation time_rev(index_t& ind)
    {
       swap(ind.w1_in, ind.w1_out);
       ind.w2_in = w2_out;
-
-      mom_sign_change(ind.k1_in); // change all momentum signs
-      mom_sign_change(ind.k2_in);
-      mom_sign_change(ind.k1_out);
+      
+      // Changing all momenta signs is unnecessary since equal to rotating twice by 90 degrees
 
       int k2_out = sum_mom[ sum_mom[ind.k1_in][ind.k2_in] ] [ sign_change_k_ind_arr[ind.k1_out] ]; // calculate k2_out 
       swap(ind.k1_in, ind.k1_out); 	// swap k1_in and k1_out
@@ -73,6 +81,7 @@ operation time_rev(index_t& ind)
 
       swap(ind.s1_in, ind.s2_in);
       swap(ind.s1_out, ind.s2_out);
+
       // Note: no operation needed
    }
    return operation(false,false);
