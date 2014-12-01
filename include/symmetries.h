@@ -1,126 +1,53 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmetries.h
- * 	contents:  	Use index symmetries of a two-particle vertex tensor to determine a minimal 
- * 			set of independent elements	
+ * 	file: 		symmap.h
+ * 	contents:  	For a given set of symmetries, establish the linking between the 
+ * 			vertex tensor and the independent couplings	
  * 
  ****************************************************************************************************/
 
 
-#ifndef SYMMETRIES_H
-#define SYMMETRIES_H
+#ifndef SYMMAP_H
+#define SYMMAP_H
 
-#include <boost/multi_array.hpp>
+#include <symmetries.h>
+#include <const.h>
 
-/**
- *	Class defines a type that contains a set of vertex indeces specifying a tensor element. Symmetries can act on it.	
- */
-class index_t  // : public inherits
-{
-   public:
-      int w1_in, w2_in, w1_out; ///< In and outgoing frequency indeces. Correspond to Matsubara frequencys caluclated according 2\Pi/\beta(n + 1/2)
-      int k1_in, k2_in, k1_out;	///< In and outgoing momentum patch indeces.
-      int s1_in, s2_in, s1_out, s2_out;	///< In and outgoing discrete quantum numbers. Correspond to tupels of e.g. spin, orbital ...
+typedef operation (*symm_func_t)(index_t&); 		///< Symmetry function that acts on an index_t object and alters it 
 
-      ///< Constructor for index_t
-      index_t(int w1_in_, int w2_in_, int w1_out_, int k1_in_, int k2_in_, int k1_out_, int s1_in_, int s2_in_, int s1_out_, int s2_out_) :
-	 w1_in(w1_in_), w2_in(w2_in_), w1_out(w1_out_), k1_in(k1_in_), k2_in(k2_in_), k1_out(k1_out_), s1_in(s1_in_), s2_in(s2_in_), s1_out(s1_out_), s2_out(s2_out_)
-   {}
+///< Iterate a symmetry on vertex object
+void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos );
 
-      /********************* specify possible index operations ********************/ 
+// Symmetries
+operation exch_in(index_t& ind);	///< Exchange ingoing lines
+operation exch_out(index_t& ind);	///< Exchange outgoing lines
+operation compl_conj(index_t& ind);	///< Complex conjugation
+operation time_rev(index_t& ind);	///< Time reversal symmetry
+operation particle_hole(index_t& ind);	///< Particle hole symmetry CHECK !!!!!!!!!!!!!!!!!!!!
 
-   protected:
-
-   private:
-
-      friend std::ostream &operator<<(std::ostream&, const index_t&); ///< Define output operator << for index_t
-};
+operation rot_k(index_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
+operation mirror_vert(index_t& ind);	///< Mirror all momenta vertically
+operation mirror_diag(index_t& ind);	///< Mirror all momenta diagonally
 
 
+// Helper functions
+void freq_sign_change(int& ind);	///< Change sign of signle frequency
+void mom_sign_change(int& ind);		///< Change sign of single momentum
+void mirror_mom_vert(int& ind);		///< Mirror momentum at vertical axis
+void mirror_mom_diag(int& ind);		///< Mirror momentum at diagonal (bottom left to top right) axis
+void swap(int& a, int& b);		///< Swap two numbers
 
-/**
- *	Set of possible operations after symmetry operation
- */
-class operation :  public std::pair<bool,bool>
-{
-   public:
-      ///< Constructor taking two bools as argument
-      operation(const bool& first_, const bool& second_)
-      {
-	 (*this).first = first_ ;
-	 (*this).second = second_;
-      }
-      
-      ///< Overload multiplication operator for successive application of operations
-      operation  operator*(const operation& b)
-      {
-	 return operation(  (*this).first xor b.first, (*this).second xor b.second ) ;
-      }
-
-   protected:
-
-   private:
-
-};
-
-//operation  operator*(const operation& a, const operation& b)
-//{
-//return operation(  a.first xor b.first, a.second xor b.second ) ;
-//}
-
-
+const int rot_k_ind_arr[8] = {0, 2, 3, 4, 1, 7, 6, 5}; ///< Array that specifies how to rotate single momentum index
+const int sign_change_k_ind_arr[8] = {0, 3, 4, 1, 2, 5, 6, 7}; ///< Array that specifies how to change sign of single momentum index ( corresponds to 2 rotations )
+const int mirror_mom_vert_arr[8] = { 0, 4, 3, 2, 1, 5, 6, 7 }; ///< Array that specifies how to mirror single momentum index at vertical axis
+const int mirror_mom_diag_arr[8] = { 0, 1, 4, 3, 2, 7, 6, 5 }; ///< Array that specifies how to mirror single momentum index at diagonal ( bottom left to top right ) axis
 
 /**
- *	Elements of vertex tensor. States index of independent coupling array and possible operations on it
+ *	Calculate the sum of two momenta
  */
-struct ind_cpl_t
-{
-   // CHANGE !!!! IMPLEMENT HERE UNSIGNED SHORT INT
-   int ind;	///< Index in the vector of independent couplings.
-   operation oper; ///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
+const int sum_mom[8][8] = { 	{ 0, 1, 2, 3, 4, 5, 6, 7 }, { 1, 6, 7, 0, 5, 2, 3, 4 }, { 2, 7, 4, 5, 0, 1, 4, 3 }, { 3, 0, 5, 6, 7, 4, 1, 2 }, 
+   					{ 4, 5, 0, 7, 6, 3, 2, 1 }, { 5, 2, 1, 4, 3, 0, 7, 6 }, { 6, 3, 4, 1, 2, 7, 0, 5 }, { 7, 4, 3, 2, 1, 6, 5, 0 } } ;
 
-   ///< Constructor int, bool, bool
-   ind_cpl_t(int ind_ = -1, bool first_ = false , bool second_ = false ):
-      ind(ind_), oper(first_, second_)
-   {}
-   ///< Constructor int, operation
-   ind_cpl_t(int ind_, operation oper_):
-      ind(ind_), oper(oper_)
-   {}
-};
-
-
-/**
- *	Class representing the vertex tensor
- */
-class vertex_tensor : public boost::multi_array<ind_cpl_t, 10>
-{
-   public:
-
-      typedef boost::multi_array<ind_cpl_t, 10> super;
-
-      ///< Allow access to elements in tensor by means of index object
-      ind_cpl_t& operator()(index_t& ind)
-      {
-	 return (*this)[ind.w1_in][ind.w2_in][ind.w1_out][ind.k1_in][ind.k2_in][ind.k1_out][ind.s1_in][ind.s2_in][ind.s1_out][ind.s2_out];
-      }
-
-      ///< Allow access to elements in tensor by specifying all indeces
-      ind_cpl_t& operator()(int w1_in, int w2_in, int w1_out, int k1_in, int k2_in, int k1_out, int s1_in, int s2_in, int s1_out, int s2_out) 
-      {
-	 return (*this)[w1_in][w2_in][w1_out][k1_in][k2_in][k1_out][s1_in][s2_in][s1_out][s2_out];
-      }
-
-      ///< Define more convenient constructor
-      vertex_tensor(int dim_w, int dim_k, int dim_s):
-	 super(boost::extents[dim_w][dim_w][dim_w][dim_k][dim_k][dim_k][dim_s][dim_s][dim_s][dim_s])
-   {}
-
-   protected:
-
-   private:
-
-};
 
 #endif 
