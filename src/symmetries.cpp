@@ -89,26 +89,10 @@ operation time_rev(index_t& ind)
 
 operation particle_hole(index_t& ind)
 {
-   int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
-   if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
-   {
-      swap(ind.w1_in, ind.w1_out);
-      ind.w2_in = w2_out;
-
-      freq_sign_change(ind.w1_in);
-      freq_sign_change(ind.w2_in);
-      freq_sign_change(ind.w1_out);
-
-      int k2_out = sum_mom[ sum_mom[ind.k1_in][ind.k2_in] ] [ sign_change_k_ind_arr[ind.k1_out] ]; // calculate k2_out 
-      swap(ind.k1_in, ind.k1_out); 	// swap k1_in and k1_out
-      ind.k2_in = k2_out; 		// swap k2_in and k2_out
-
-      swap(ind.s1_in, ind.s2_in);
-      swap(ind.s1_out, ind.s2_out);
-
-      return operation(false,true);
-   }
-   return operation(false,false);
+   mirror_mom_pipi(ind.k1_in);
+   mirror_mom_pipi(ind.k2_in);
+   mirror_mom_pipi(ind.k1_out);
+   return operation(false,true);
 }
 
 operation rot_k(index_t& ind)
@@ -153,6 +137,11 @@ void mirror_mom_vert(int& ind)
 void mirror_mom_diag(int& ind)
 {
    ind = mirror_mom_diag_arr[ind];
+}
+
+void mirror_mom_pipi(int& ind)
+{   
+   ind = mirror_mom_pipi_arr[ind]; 
 }
 
 void swap(int& a, int& b)
