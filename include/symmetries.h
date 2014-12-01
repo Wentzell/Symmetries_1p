@@ -24,7 +24,7 @@ operation exch_in(index_t& ind);	///< Exchange ingoing lines
 operation exch_out(index_t& ind);	///< Exchange outgoing lines
 operation compl_conj(index_t& ind);	///< Complex conjugation
 operation time_rev(index_t& ind);	///< Time reversal symmetry
-operation particle_hole(index_t& ind);	///< Particle hole symmetry CHECK !!!!!!!!!!!!!!!!!!!!
+operation particle_hole(index_t& ind);	///< Particle hole symmetry REDUCTION SEEMS TOO STRONG, CHECK !!!!!!!!!!
 
 operation rot_k(index_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
 operation mirror_vert(index_t& ind);	///< Mirror all momenta vertically
