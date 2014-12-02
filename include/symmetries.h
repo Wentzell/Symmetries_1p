@@ -16,6 +16,8 @@
 
 typedef operation (*symm_func_t)(index_t&); 		///< Symmetry function that acts on an index_t object and alters it 
 
+///< Apply symmetries and establish mapping
+void init_symm( std::shared_ptr<vertex_tensor> vertex_ptr, std::vector<index_t>& ind_cpl_list ); 
 ///< Iterate a symmetry on vertex object
 void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos );
 

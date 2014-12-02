@@ -28,8 +28,6 @@ class index_t  // : public inherits
 	 w1_in(w1_in_), w2_in(w2_in_), w1_out(w1_out_), k1_in(k1_in_), k2_in(k2_in_), k1_out(k1_out_), s1_in(s1_in_), s2_in(s2_in_), s1_out(s1_out_), s2_out(s2_out_)
    {}
 
-      /********************* specify possible index operations ********************/ 
-
    protected:
 
    private:
@@ -64,11 +62,6 @@ class operation :  public std::pair<bool,bool>
 
 };
 
-//operation  operator*(const operation& a, const operation& b)
-//{
-//return operation(  a.first xor b.first, a.second xor b.second ) ;
-//}
-
 
 
 /**
@@ -76,19 +69,26 @@ class operation :  public std::pair<bool,bool>
  */
 struct ind_cpl_t
 {
-   // CHANGE !!!! IMPLEMENT HERE UNSIGNED SHORT INT
-   int ind;	///< Index in the vector of independent couplings.
-   operation oper; ///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
+   unsigned int ind;	///< Index in the vector of independent couplings.
+   bool checked; 	///< States wether element has been checked for symmetries
+   operation oper; 	///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
+
+   ///< Default Constructor 
+   ind_cpl_t():
+      ind(0), checked(false), oper(false, false)
+   {}
 
    ///< Constructor int, bool, bool
-   ind_cpl_t(int ind_ = -1, bool first_ = false , bool second_ = false ):
-      ind(ind_), oper(first_, second_)
+   ind_cpl_t(int ind_ , bool first_ = false , bool second_ = false ):
+      ind(ind_), checked(true), oper(first_, second_)
    {}
+
    ///< Constructor int, operation
    ind_cpl_t(int ind_, operation oper_):
-      ind(ind_), oper(oper_)
+      ind(ind_), checked(true), oper(oper_)
    {}
 };
+
 
 
 /**
