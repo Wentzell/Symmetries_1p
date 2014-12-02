@@ -60,6 +60,9 @@ operation compl_conj(index_t& ind)
 
       // Changing all momenta signs is unnecessary since equal to rotating twice by 90 degrees
 
+      swap(ind.s1_in, ind.s2_in);
+      swap(ind.s1_out, ind.s2_out);
+
       return operation(false,true);
    }
    return operation(false, false);
