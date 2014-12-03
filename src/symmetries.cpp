@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void init_symm( shared_ptr<vertex_tensor> vertex_ptr, vector<index_t>& ind_cpl_list )
+void init_symm( shared_ptr<vertex_tensor> vertex_ptr, vector<index_2p_t>& ind_cpl_list )
 {
    // Initialize vector containing all symmetry functions 
    vector<symm_func_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
@@ -36,7 +36,7 @@ void init_symm( shared_ptr<vertex_tensor> vertex_ptr, vector<index_t>& ind_cpl_l
 			   for(int s1_out = 0; s1_out < QN_COUNT; ++s1_out)
 			      for(int s2_out = 0; s2_out < QN_COUNT; ++s2_out)
 			      {
-				 index_t ind(w1_in, w2_in, w1_out, k1_in, k2_in, k1_out, s1_in, s2_in, s1_out, s2_out);
+				 index_2p_t ind(w1_in, w2_in, w1_out, k1_in, k2_in, k1_out, s1_in, s2_in, s1_out, s2_out);
 				 if ( (*vertex_ptr)(ind).ind == -1 )  							// if tensor object not yet related to any other
 				 {
 				    ind_cpl_list.push_back(ind);							// push standard representative into ind_cpl_list
@@ -50,11 +50,11 @@ void init_symm( shared_ptr<vertex_tensor> vertex_ptr, vector<index_t>& ind_cpl_l
 
 }
 
-void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vertex, vector<symm_func_t> symm_func_list , int ind_cpl_list_pos )
+void iterate( const index_2p_t& ind, const operation& track_op, vertex_tensor& vertex, vector<symm_func_t> symm_func_list , int ind_cpl_list_pos )
 {
    for(auto symm_func: symm_func_list) 		// iterate over list of all symmetries specified
    {
-      index_t ind_it = ind;			// copy ind
+      index_2p_t ind_it = ind;			// copy ind
       operation curr_op = symm_func(ind_it) * track_op;	// apply symmetry operation and track operations applied
       if( !vertex(ind_it).checked )		// if resulting tensor index not yet related to any other
       { 
@@ -66,7 +66,7 @@ void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vert
 
 //----- Antisymmetry
 
-operation exch_in(index_t& ind)
+operation exch_in(index_2p_t& ind)
 {
    swap(ind.w1_in, ind.w2_in);
    swap(ind.k1_in, ind.k2_in);
@@ -74,7 +74,7 @@ operation exch_in(index_t& ind)
    return operation(true,false);
 }
 
-operation exch_out(index_t& ind) 
+operation exch_out(index_2p_t& ind) 
 {
    int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
    if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
@@ -87,7 +87,7 @@ operation exch_out(index_t& ind)
    return operation(false,false); 
 }
 
-operation compl_conj(index_t& ind)
+operation compl_conj(index_2p_t& ind)
 {
    int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
    if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
@@ -109,7 +109,7 @@ operation compl_conj(index_t& ind)
    return operation(false, false);
 }
 
-operation time_rev(index_t& ind)
+operation time_rev(index_2p_t& ind)
 {
    int w2_out = ind.w1_in + ind.w2_in - ind.w1_out; // calculate w2_out by means of frequency conservation
    if ( 0 <= w2_out && w2_out < FREQ_COUNT_VERT )	// check if w2_out inside the grid, otherwise skip symmetry
@@ -131,7 +131,7 @@ operation time_rev(index_t& ind)
    return operation(false,false);
 }
 
-operation particle_hole(index_t& ind)
+operation particle_hole(index_2p_t& ind)
 {
    mirror_mom_pipi(ind.k1_in);
    mirror_mom_pipi(ind.k2_in);
@@ -139,7 +139,7 @@ operation particle_hole(index_t& ind)
    return operation(false,true);
 }
 
-operation rot_k(index_t& ind)
+operation rot_k(index_2p_t& ind)
 {
    ind.k1_in = rot_k_ind_arr[ind.k1_in];
    ind.k2_in = rot_k_ind_arr[ind.k2_in];
@@ -147,7 +147,7 @@ operation rot_k(index_t& ind)
    return operation(false,false);
 }
 
-operation mirror_vert(index_t& ind)
+operation mirror_vert(index_2p_t& ind)
 {
    mirror_mom_vert(ind.k1_in);
    mirror_mom_vert(ind.k2_in);
@@ -155,7 +155,7 @@ operation mirror_vert(index_t& ind)
    return operation(false,false);
 }
 
-operation mirror_diag(index_t& ind)
+operation mirror_diag(index_2p_t& ind)
 {
    mirror_mom_diag(ind.k1_in);
    mirror_mom_diag(ind.k2_in);

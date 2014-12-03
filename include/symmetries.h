@@ -14,23 +14,23 @@
 #include <symmap.h>
 #include <const.h>
 
-typedef operation (*symm_func_t)(index_t&); 		///< Symmetry function that acts on an index_t object and alters it 
+typedef operation (*symm_func_t)(index_2p_t&); 		///< Symmetry function that acts on an index_2p_t object and alters it 
 
 ///< Apply symmetries and establish mapping
-void init_symm( std::shared_ptr<vertex_tensor> vertex_ptr, std::vector<index_t>& ind_cpl_list ); 
+void init_symm( std::shared_ptr<vertex_tensor> vertex_ptr, std::vector<index_2p_t>& ind_cpl_list ); 
 ///< Iterate a symmetry on vertex object
-void iterate( const index_t& ind, const operation& track_op, vertex_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos );
+void iterate( const index_2p_t& ind, const operation& track_op, vertex_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos );
 
 // Symmetries
-operation exch_in(index_t& ind);	///< Exchange ingoing lines
-operation exch_out(index_t& ind);	///< Exchange outgoing lines
-operation compl_conj(index_t& ind);	///< Complex conjugation
-operation time_rev(index_t& ind);	///< Time reversal symmetry
-operation particle_hole(index_t& ind);	///< Particle hole symmetry REDUCTION SEEMS TOO STRONG, CHECK !!!!!!!!!!
+operation exch_in(index_2p_t& ind);	///< Exchange ingoing lines
+operation exch_out(index_2p_t& ind);	///< Exchange outgoing lines
+operation compl_conj(index_2p_t& ind);	///< Complex conjugation
+operation time_rev(index_2p_t& ind);	///< Time reversal symmetry
+operation particle_hole(index_2p_t& ind);	///< Particle hole symmetry REDUCTION SEEMS TOO STRONG, CHECK !!!!!!!!!!
 
-operation rot_k(index_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
-operation mirror_vert(index_t& ind);	///< Mirror all momenta vertically
-operation mirror_diag(index_t& ind);	///< Mirror all momenta diagonally
+operation rot_k(index_2p_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
+operation mirror_vert(index_2p_t& ind);	///< Mirror all momenta vertically
+operation mirror_diag(index_2p_t& ind);	///< Mirror all momenta diagonally
 
 
 // Helper functions
