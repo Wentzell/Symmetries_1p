@@ -17,7 +17,7 @@ using namespace std;
 int main (int argc, char * argv[])
 {
    // Initialize vertex tensor
-   shared_ptr<vertex_tensor> vertex_ptr(new vertex_tensor(FREQ_COUNT_VERT, PATCH_COUNT, QN_COUNT));
+   shared_ptr<se_tensor> vertex_ptr(new se_tensor(FREQ_COUNT_SE, PATCH_COUNT, QN_COUNT));
 
    // Initialize independent coupling vector
    vector<index_t> ind_cpl_list;
