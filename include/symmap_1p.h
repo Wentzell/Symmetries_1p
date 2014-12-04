@@ -33,7 +33,7 @@ class index_1p_t  // : public inherits
 };
 
 
-#ifndef SYMMETRIES_H // Avoid multiple definitions if 2p symmetries also used
+#ifndef SYMMAP_H // Avoid multiple definitions if 2p symmetries also used
 
 /**
  *	Set of possible operations after symmetry operation
