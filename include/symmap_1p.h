@@ -1,15 +1,15 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmap.h
+ * 	file: 		symmap_1p.h
  * 	contents: 	Definition of vertex-energy index class and clases necessary to establish
  * 			the symmetry mapping	
  * 
  ****************************************************************************************************/
 
 
-#ifndef SYMMAP_H
-#define SYMMAP_H
+#ifndef SYMMAP_1P_H
+#define SYMMAP_1P_H
 
 #include <boost/multi_array.hpp>
 
@@ -23,16 +23,17 @@ class index_1p_t  // : public inherits
       int k;	///< Momentum patch index
       int s_in, s_out;	///< In and outgoing discrete quantum numbers. Correspond to tupels of e.g. spin, orbital ...
 
-      ///< Constructor for index_2p_t
-      index_2p_t(int w_, int k_, int s_in_, int s_out_) :
+      ///< Constructor for index_1p_t
+      index_1p_t(int w_, int k_, int s_in_, int s_out_) :
 	 w(w_), k(k_), s_in(s_in_), s_out(s_out_)
    {}
 
    private:
-      friend std::ostream &operator<<(std::ostream&, const index_1p_t&); ///< Define output operator << for index_2p_t
+      friend std::ostream &operator<<(std::ostream&, const index_1p_t&); ///< Define output operator << for index_1p_t
 };
 
 
+#ifndef SYMMETRIES_H // Avoid multiple definitions if 2p symmetries also used
 
 /**
  *	Set of possible operations after symmetry operation
@@ -83,6 +84,8 @@ struct ind_cpl_t
    {}
 };
 
+#endif
+
 /**
  *	Class representing the vertex tensor
  */
@@ -92,7 +95,7 @@ class se_tensor : public boost::multi_array<ind_cpl_t, 4>
       typedef boost::multi_array<ind_cpl_t, 4> super;
 
       ///< Allow access to elements in tensor by means of index object
-      ind_cpl_t& operator()(index_2p_t& ind)
+      ind_cpl_t& operator()(index_1p_t& ind)
       {
 	 return (*this)[ind.w][ind.k][ind.s_in][ind.s_out];
       }

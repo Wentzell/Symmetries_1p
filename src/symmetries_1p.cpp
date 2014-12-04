@@ -1,16 +1,16 @@
 
 /************************************************************************************************//**
  *  		
- * 	file: 		symmetries.cpp
- * 	contents:   	see symmetries.h
+ * 	file: 		symmetries_1p.cpp
+ * 	contents:   	see symmetries_1p.h
  * 
  ****************************************************************************************************/
 
-#include <symmetries.h>
+#include <symmetries_1p.h>
 
 using namespace std;
 
-void init_symm( shared_ptr<se_tensor> vertex_ptr, vector<index_1p_t>& ind_cpl_list )
+void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
 {
    // Initialize vector containing all symmetry functions 
    vector<symm_func_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
@@ -27,14 +27,14 @@ void init_symm( shared_ptr<se_tensor> vertex_ptr, vector<index_1p_t>& ind_cpl_li
 	 for(int s_in = 0; s_in < QN_COUNT; ++s_in)
 	    for(int s_out = 0; s_out < QN_COUNT; ++s_out)
 	    {
-	       index_1p_t ind(w, k, s_in, s_out, s2_out);
-	       if ( (*vertex_ptr)(ind).ind == -1 )  							// if tensor object not yet related to any other
+	       index_1p_t ind(w, k, s_in, s_out );
+	       if ( !(*se_ptr)(ind).checked )  							// if tensor object not yet related to any other
 	       {
 		  ind_cpl_list.push_back(ind);							// push standard representative into ind_cpl_list
 		  int ind_cpl_list_pos =  ind_cpl_list.size() - 1 ; 					// position in ind_cpl_list is size - 1
-		  (*vertex_ptr)(ind) = ind_cpl_t( ind_cpl_list_pos ); 				// save position with trivial operations
+		  (*se_ptr)(ind) = ind_cpl_t( ind_cpl_list_pos ); 				// save position with trivial operations
 		  operation track_op(false,false);
-		  iterate( ind, track_op, *vertex_ptr, symm_func_list, ind_cpl_list_pos ); 		// start iterating on index 
+		  iterate( ind, track_op, *se_ptr, symm_func_list, ind_cpl_list_pos ); 		// start iterating on index 
 	       }
 	    }
 
@@ -59,18 +59,18 @@ void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& verte
 
 operation compl_conj(index_1p_t& ind)
 {
-      freq_sign_change(ind.w);
+   freq_sign_change(ind.w);
 
-      // Changing all momenta signs is unnecessary since equal to rotating twice by 90 degrees
+   // Changing momenta sign is unnecessary since equal to rotating twice by 90 degrees
 
-      swap(ind.s_in, ind.s_out);
-
-      return operation(false,true);
+   swap(ind.s_in, ind.s_out);
+   return operation(false,true);
 }
 
 operation time_rev(index_1p_t& ind)
 {
-      swap(ind.s_in, ind.s_out);
+   swap(ind.s_in, ind.s_out);
+   return operation(false,false);
 }
 
 operation particle_hole(index_1p_t& ind)
@@ -91,6 +91,8 @@ operation mirror_vert(index_1p_t& ind)
    return operation(false,false);
 }
 
+#ifndef SYMMETRIES_H
+
 void freq_sign_change(int& ind)
 {
    ind = FREQ_COUNT_SE - ind - 1;
@@ -106,11 +108,6 @@ void mirror_mom_vert(int& ind)
    ind = mirror_mom_vert_arr[ind];
 }
 
-void mirror_mom_diag(int& ind)
-{
-   ind = mirror_mom_diag_arr[ind];
-}
-
 void mirror_mom_pipi(int& ind)
 {   
    ind = mirror_mom_pipi_arr[ind]; 
@@ -123,4 +120,4 @@ void swap(int& a, int& b)
    b = temp;
 }
 
-
+#endif
