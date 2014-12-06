@@ -14,12 +14,12 @@
 #include <symmap_1p.h>
 #include <const.h>
 
-typedef operation (*symm_func_t)(index_1p_t&); 		///< Symmetry function that acts on an index_1p_t object and alters it 
+typedef operation (*symm_func_1p_t)(index_1p_t&); 		///< Symmetry function that acts on an index_1p_t object and alters it 
 
 ///< Apply symmetries and establish mapping
 void init_symm( std::shared_ptr<se_tensor> se_ptr, std::vector<index_1p_t>& ind_cpl_list ); 
 ///< Iterate a symmetry on vertex object
-void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, std::vector<symm_func_t> symm_func_list , int ind_cpl_list_pos );
+void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, std::vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos );
 
 // Symmetries
 operation compl_conj(index_1p_t& ind);	///< Complex conjugation
@@ -28,20 +28,5 @@ operation particle_hole(index_1p_t& ind);	///< Particle hole symmetry REDUCTION 
 
 operation rot_k(index_1p_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
 operation mirror_vert(index_1p_t& ind);	///< Mirror all momenta vertically
-
-#ifndef SYMMETRIES_H // Avoid multiple definitions if 2p symmetries also used
-// Helper functions
-void freq_sign_change(int& ind);	///< Change sign of signle frequency
-void mom_sign_change(int& ind);		///< Change sign of single momentum
-void mirror_mom_vert(int& ind);		///< Mirror momentum at vertical axis
-void mirror_mom_diag(int& ind);		///< Mirror momentum at diagonal (bottom left to top right) axis
-void mirror_mom_pipi(int& ind);		///< Swap momentum index for the one obtained by taking (pi,pi) - k
-void swap(int& a, int& b);		///< Swap two numbers
-
-const int rot_k_ind_arr[8] = {0, 2, 3, 4, 1, 7, 6, 5}; ///< Array that specifies how to rotate single momentum index
-const int sign_change_k_ind_arr[8] = {0, 3, 4, 1, 2, 5, 6, 7}; ///< Array that specifies how to change sign of single momentum index ( corresponds to 2 rotations )
-const int mirror_mom_vert_arr[8] = { 0, 4, 3, 2, 1, 5, 6, 7 }; ///< Array that specifies how to mirror single momentum index at vertical axis
-const int mirror_mom_pipi_arr[8] = { 6, 1, 2, 3, 4, 7, 0, 5 }; ///< Array that specifies how to calculate (pi,pi) - k for single momentum k
-#endif
 
 #endif 

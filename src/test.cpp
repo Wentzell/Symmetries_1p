@@ -6,7 +6,7 @@
  * 
  ****************************************************************************************************/
 
-#include <symmetries.h>
+#include <symmetries_1p.h>
 #include <iostream>
 
 using namespace std;

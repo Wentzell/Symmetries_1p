@@ -12,6 +12,7 @@
 #define SYMMAP_1P_H
 
 #include <boost/multi_array.hpp>
+#include <symbase.h>
 
 /**
  *	Class defines a type that contains a set of self-energy indeces specifying a tensor element. Symmetries can act on it.	
@@ -31,60 +32,6 @@ class index_1p_t  // : public inherits
    private:
       friend std::ostream &operator<<(std::ostream&, const index_1p_t&); ///< Define output operator << for index_1p_t
 };
-
-
-#ifndef SYMMAP_H // Avoid multiple definitions if 2p symmetries also used
-
-/**
- *	Set of possible operations after symmetry operation
- */
-class operation :  public std::pair<bool,bool>
-{
-   public:
-      ///< Constructor taking two bools as argument
-      operation(const bool& first_, const bool& second_)
-      {
-	 (*this).first = first_ ;
-	 (*this).second = second_;
-      }
-
-      ///< Overload multiplication operator for successive application of operations
-      operation  operator*(const operation& b)
-      {
-	 return operation(  (*this).first xor b.first, (*this).second xor b.second ) ;
-      }
-
-   private:
-};
-
-
-/**
- *	Elements of vertex tensor. States index of independent coupling array and possible operations on it
- */
-struct ind_cpl_t
-{
-   public:
-      unsigned int ind;	///< Index in the vector of independent couplings.
-      bool checked; 	///< States wether element has been checked for symmetries
-      operation oper; 	///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
-
-      ///< Default Constructor 
-      ind_cpl_t():
-	 ind(0), checked(false), oper(false, false)
-   {}
-
-      ///< Constructor int, bool, bool
-      ind_cpl_t(int ind_ , bool first_ = false , bool second_ = false ):
-	 ind(ind_), checked(true), oper(first_, second_)
-   {}
-
-      ///< Constructor int, operation
-      ind_cpl_t(int ind_, operation oper_):
-	 ind(ind_), checked(true), oper(oper_)
-   {}
-};
-
-#endif
 
 /**
  *	Class representing the vertex tensor

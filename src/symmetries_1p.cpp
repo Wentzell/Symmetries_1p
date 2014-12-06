@@ -13,14 +13,16 @@ using namespace std;
 void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
 {
    // Initialize vector containing all symmetry functions 
-   vector<symm_func_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
+   vector<symm_func_1p_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
 
    symm_func_list.push_back(compl_conj);
    symm_func_list.push_back(time_rev);
    symm_func_list.push_back(particle_hole);
+
+#ifndef NO_MOMENTA
    symm_func_list.push_back(rot_k);
    symm_func_list.push_back(mirror_vert);
-
+#endif
 
    for(int w = 0; w < FREQ_COUNT_SE; ++w)
       for(int k = 0; k < PATCH_COUNT; ++k)
@@ -41,7 +43,7 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
 
 }
 
-void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, vector<symm_func_t> symm_func_list , int ind_cpl_list_pos )
+void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )
 {
    for(auto symm_func: symm_func_list) 		// iterate over list of all symmetries specified
    {
@@ -75,7 +77,9 @@ operation time_rev(index_1p_t& ind)
 
 operation particle_hole(index_1p_t& ind)
 {
+#ifndef NO_MOMENTA
    mirror_mom_pipi(ind.k);
+#endif
    return operation(false,true);
 }
 
@@ -91,33 +95,3 @@ operation mirror_vert(index_1p_t& ind)
    return operation(false,false);
 }
 
-#ifndef SYMMETRIES_H
-
-void freq_sign_change(int& ind)
-{
-   ind = FREQ_COUNT_SE - ind - 1;
-}
-
-void mom_sign_change(int& ind)
-{
-   ind = sign_change_k_ind_arr[ind];
-}
-
-void mirror_mom_vert(int& ind)
-{
-   ind = mirror_mom_vert_arr[ind];
-}
-
-void mirror_mom_pipi(int& ind)
-{   
-   ind = mirror_mom_pipi_arr[ind]; 
-}
-
-void swap(int& a, int& b)
-{
-   int temp = a;
-   a = b;
-   b = temp;
-}
-
-#endif
