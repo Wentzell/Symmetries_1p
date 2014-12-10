@@ -17,6 +17,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 
 # Compiler Settings
 CFLAGS := -std=c++11 #-fopenmp # General compiler flags
+CFLAGS += -D NO_MOMENTA
 DBFLAGS := -O0 -g # Compiler flags for debugging
 PROFFLAGS := -O2 -g # Compiler flags for profiling
 OPTIMIZEFLAGS := -flto -march=native -Ofast -fopenmp # Compiler flags for optimal speed

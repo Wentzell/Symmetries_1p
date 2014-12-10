@@ -43,16 +43,16 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
 
 }
 
-void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )
+void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& selfEn, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )
 {
    for(auto symm_func: symm_func_list) 		// iterate over list of all symmetries specified
    {
       index_1p_t ind_it = ind;			// copy ind
       operation curr_op = symm_func(ind_it) * track_op;	// apply symmetry operation and track operations applied
-      if( !vertex(ind_it).checked )		// if resulting tensor index not yet related to any other
+      if( !selfEn(ind_it).checked )		// if resulting tensor index not yet related to any other
       { 
-	 vertex(ind_it) = ind_cpl_t(ind_cpl_list_pos, curr_op); 		// relate to position
-	 iterate( ind_it, curr_op, vertex, symm_func_list, ind_cpl_list_pos );	// iterate further	
+	 selfEn(ind_it) = ind_cpl_t(ind_cpl_list_pos, curr_op); 		// relate to position
+	 iterate( ind_it, curr_op, selfEn, symm_func_list, ind_cpl_list_pos );	// iterate further	
       }
    }
 }
@@ -61,7 +61,7 @@ void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& verte
 
 operation compl_conj(index_1p_t& ind)
 {
-   freq_sign_change(ind.w);
+   freq_sign_change(ind.w, FREQ_COUNT_SE);
 
    // Changing momenta sign is unnecessary since equal to rotating twice by 90 degrees
 

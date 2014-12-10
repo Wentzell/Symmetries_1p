@@ -9,9 +9,9 @@
 #include <symbase.h>
 #include <const.h>
 
-void freq_sign_change(int& ind)
+void freq_sign_change(int& ind, const int freq_count)
 {
-   ind = FREQ_COUNT_SE - ind - 1;
+   ind = freq_count - ind - 1;
 }
 
 void mom_sign_change(int& ind)

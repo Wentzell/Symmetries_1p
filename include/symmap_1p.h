@@ -13,7 +13,7 @@
 
 #include <boost/multi_array.hpp>
 #include <symbase.h>
-
+#include <iostream>
 /**
  *	Class defines a type that contains a set of self-energy indeces specifying a tensor element. Symmetries can act on it.	
  */
