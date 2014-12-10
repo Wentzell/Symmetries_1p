@@ -35,6 +35,7 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.swp
 
 # Ignore the build, lib and data dirs #
 #################################
@@ -42,6 +43,7 @@ build
 lib/*
 dat/*
 bin/run
+doc/*
 
 # Project specific files #
 ##########################
