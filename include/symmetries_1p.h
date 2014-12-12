@@ -22,9 +22,10 @@ void init_symm( std::shared_ptr<se_tensor> se_ptr, std::vector<index_1p_t>& ind_
 void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, std::vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos );
 
 // Symmetries
-operation compl_conj(index_1p_t& ind);	///< Complex conjugation
+operation compl_conj(index_1p_t& ind);	///< Complex conjugation 
 operation time_rev(index_1p_t& ind);	///< Time reversal symmetry
 operation particle_hole(index_1p_t& ind);	///< Particle hole symmetry REDUCTION SEEMS TOO STRONG, CHECK !!!!!!!!!!
+operation spin_symm(index_1p_t& ind);	///< Spin symmetry in nambu notation
 
 operation rot_k(index_1p_t& ind);		///< Rotate all momenta by 90 degrees - IMPLEMENT USING STATIC VECTOR
 operation mirror_vert(index_1p_t& ind);	///< Mirror all momenta vertically

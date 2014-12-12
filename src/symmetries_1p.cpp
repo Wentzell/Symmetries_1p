@@ -15,9 +15,10 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
    // Initialize vector containing all symmetry functions 
    vector<symm_func_1p_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
 
-   //symm_func_list.push_back(compl_conj);
-   //symm_func_list.push_back(time_rev);
+   symm_func_list.push_back(compl_conj);
+   symm_func_list.push_back(time_rev);
    //symm_func_list.push_back(particle_hole);
+   symm_func_list.push_back(spin_symm);
 
 #ifndef NO_MOMENTA
    symm_func_list.push_back(rot_k);
@@ -81,6 +82,21 @@ operation particle_hole(index_1p_t& ind)
    mirror_mom_pipi(ind.k);
 #endif
    return operation(false,true);
+}
+
+operation spin_symm(index_1p_t& ind)
+{
+   freq_sign_change(ind.w, FREQ_COUNT_SE);
+   
+   swap(ind.s_in, ind.s_out);
+
+   flip_spin(ind.s_in);
+   flip_spin(ind.s_out);
+
+   if ( ( ind.s_in + !(ind.s_out) ) % 2  != 0 ) // if uneven amount of creation operators minus sign, see masterthesis
+      return operation(true, false);
+
+   return operation(false, false);
 }
 
 operation rot_k(index_1p_t& ind)
