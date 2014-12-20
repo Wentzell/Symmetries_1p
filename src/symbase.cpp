@@ -14,6 +14,11 @@ void freq_sign_change(int& ind, const int freq_count)
    ind = freq_count - ind - 1;
 }
 
+void flip_spin(int& ind)
+{   
+   ind = !ind;
+}
+
 void mom_sign_change(int& ind)
 {
    ind = sign_change_k_ind_arr[ind];
