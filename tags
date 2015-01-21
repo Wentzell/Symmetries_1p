@@ -1,0 +1,59 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CONST_H	include/const.h	11;"	d
+FREQ_COUNT_SE	include/const.h	/^const int FREQ_COUNT_SE = 2*POS_FREQ_COUNT_SE;	\/\/\/< Amount of frequencies including the negative ones$/;"	v
+PATCH_COUNT	include/const.h	/^const int PATCH_COUNT = 1;		\/\/\/< Amount of k-patches$/;"	v
+POS_FREQ_COUNT_SE	include/const.h	/^const int POS_FREQ_COUNT_SE = 100; 	\/\/\/< Amount of positive matsubara frequencies for vertrex$/;"	v
+QN_COUNT	include/const.h	/^const int QN_COUNT = 1;			\/\/\/< Amount of possible tuples of the discrete quantum numbers$/;"	v
+SYMBASE_H	include/symbase.h	11;"	d
+SYMMAP_1P_H	include/symmap_1p.h	12;"	d
+SYMMETRIES_1P_H	include/symmetries_1p.h	12;"	d
+VERT_TENSOR_IND_COUNT	include/const.h	/^const int VERT_TENSOR_IND_COUNT = FREQ_COUNT_SE * FREQ_COUNT_SE * FREQ_COUNT_SE * PATCH_COUNT * PATCH_COUNT * PATCH_COUNT * QN_COUNT  * QN_COUNT * QN_COUNT * QN_COUNT;$/;"	v
+checked	include/symbase.h	/^      bool checked; 	\/\/\/< States wether element has been checked for symmetries$/;"	m	struct:ind_cpl_t
+compl_conj	src/symmetries_1p.cpp	/^operation compl_conj(index_1p_t& ind)$/;"	f
+flip_spin	src/symbase.cpp	/^void flip_spin(int& ind)$/;"	f
+freq_sign_change	src/symbase.cpp	/^void freq_sign_change(int& ind, const int freq_count)$/;"	f
+ind	include/symbase.h	/^      unsigned int ind;	\/\/\/< Index in the vector of independent couplings.$/;"	m	struct:ind_cpl_t
+ind_cpl_t	include/symbase.h	/^      ind_cpl_t():$/;"	f	struct:ind_cpl_t
+ind_cpl_t	include/symbase.h	/^      ind_cpl_t(int ind_ , bool first_ = false , bool second_ = false ):$/;"	f	struct:ind_cpl_t
+ind_cpl_t	include/symbase.h	/^      ind_cpl_t(int ind_, operation oper_):$/;"	f	struct:ind_cpl_t
+ind_cpl_t	include/symbase.h	/^struct ind_cpl_t$/;"	s
+index_1p_t	include/symmap_1p.h	/^      index_1p_t(int w_, int k_, int s_in_, int s_out_) :$/;"	f	class:index_1p_t
+index_1p_t	include/symmap_1p.h	/^class index_1p_t  \/\/ : public inherits$/;"	c
+init_symm	src/symmetries_1p.cpp	/^void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )$/;"	f
+iterate	src/symmetries_1p.cpp	/^void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& selfEn, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )$/;"	f
+k	include/symmap_1p.h	/^      int k;	\/\/\/< Momentum patch index$/;"	m	class:index_1p_t
+main	src/test.cpp	/^int main (int argc, char * argv[])$/;"	f
+mirror_mom_diag	src/symbase.cpp	/^void mirror_mom_diag(int& ind)$/;"	f
+mirror_mom_diag_arr	include/symbase.h	/^const int mirror_mom_diag_arr[8] = { 0, 1, 4, 3, 2, 7, 6, 5 }; \/\/\/< Array that specifies how to mirror single momentum index at diagonal ( bottom left to top right ) axis$/;"	v
+mirror_mom_pipi	src/symbase.cpp	/^void mirror_mom_pipi(int& ind)$/;"	f
+mirror_mom_pipi_arr	include/symbase.h	/^const int mirror_mom_pipi_arr[8] = { 6, 1, 2, 3, 4, 7, 0, 5 }; \/\/\/< Array that specifies how to calculate (pi,pi) - k for single momentum k$/;"	v
+mirror_mom_vert	src/symbase.cpp	/^void mirror_mom_vert(int& ind)$/;"	f
+mirror_mom_vert_arr	include/symbase.h	/^const int mirror_mom_vert_arr[8] = { 0, 4, 3, 2, 1, 5, 6, 7 }; \/\/\/< Array that specifies how to mirror single momentum index at vertical axis$/;"	v
+mirror_vert	src/symmetries_1p.cpp	/^operation mirror_vert(index_1p_t& ind)$/;"	f
+mom_sign_change	src/symbase.cpp	/^void mom_sign_change(int& ind)$/;"	f
+oper	include/symbase.h	/^      operation oper; 	\/\/\/< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation$/;"	m	struct:ind_cpl_t
+operation	include/symbase.h	/^      operation(const bool& first_, const bool& second_)$/;"	f	class:operation
+operation	include/symbase.h	/^class operation : public std::pair<bool,bool>$/;"	c
+operator ()	include/symmap_1p.h	/^      ind_cpl_t& operator()(index_1p_t& ind)$/;"	f	class:se_tensor
+operator ()	include/symmap_1p.h	/^      ind_cpl_t& operator()(int w, int k, int s_in, int s_out) $/;"	f	class:se_tensor
+operator *	include/symbase.h	/^      operation  operator*(const operation& b)$/;"	f	class:operation
+operator <<	src/symmap_1p.cpp	/^std::ostream &operator<<(std::ostream& os, const index_1p_t& ind)$/;"	f
+particle_hole	src/symmetries_1p.cpp	/^operation particle_hole(index_1p_t& ind)$/;"	f
+rot_k	src/symmetries_1p.cpp	/^operation rot_k(index_1p_t& ind)$/;"	f
+rot_k_ind_arr	include/symbase.h	/^const int rot_k_ind_arr[8] = {0, 2, 3, 4, 1, 7, 6, 5}; \/\/\/< Array that specifies how to rotate single momentum index$/;"	v
+s_in	include/symmap_1p.h	/^      int s_in, s_out;	\/\/\/< In and outgoing discrete quantum numbers. Correspond to tupels of e.g. spin, orbital ...$/;"	m	class:index_1p_t
+s_out	include/symmap_1p.h	/^      int s_in, s_out;	\/\/\/< In and outgoing discrete quantum numbers. Correspond to tupels of e.g. spin, orbital ...$/;"	m	class:index_1p_t
+se_tensor	include/symmap_1p.h	/^      se_tensor(int dim_w, int dim_k, int dim_s):$/;"	f	class:se_tensor
+se_tensor	include/symmap_1p.h	/^class se_tensor : public boost::multi_array<ind_cpl_t, 4>$/;"	c
+sign_change_k_ind_arr	include/symbase.h	/^const int sign_change_k_ind_arr[8] = {0, 3, 4, 1, 2, 5, 6, 7}; \/\/\/< Array that specifies how to change sign of single momentum index ( corresponds to 2 rotations )$/;"	v
+spin_symm	src/symmetries_1p.cpp	/^operation spin_symm(index_1p_t& ind)$/;"	f
+super	include/symmap_1p.h	/^      typedef boost::multi_array<ind_cpl_t, 4> super;$/;"	t	class:se_tensor
+swap	src/symbase.cpp	/^void swap(int& a, int& b)$/;"	f
+symm_func_1p_t	include/symmetries_1p.h	/^typedef operation (*symm_func_1p_t)(index_1p_t&); \/\/\/< Symmetry function that acts on an index_1p_t object and alters it $/;"	t
+time_rev	src/symmetries_1p.cpp	/^operation time_rev(index_1p_t& ind)$/;"	f
+w	include/symmap_1p.h	/^      int w; \/\/\/< Frequency index. Correspond to Matsubara frequencys caluclated according 2\\Pi\/\\beta(n + 1\/2)$/;"	m	class:index_1p_t

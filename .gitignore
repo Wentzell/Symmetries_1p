@@ -36,6 +36,5 @@ gnplErr.txt
 *.dat
 *.eps
 *.png
-tags
 RUN_SCRIPT.sh
 plots/BKP
