@@ -1,9 +1,9 @@
 
-/************************************************************************************************//**
+/*******************************************************************************************//** @file
  *  		
  * 	file: 		symmap_1p.h
- * 	contents: 	Definition of vertex-energy index class and clases necessary to establish
- * 			the symmetry mapping	
+ * 	contents: 	Definition of index_1p_t class, represents index object for one-particle properties. 
+ * 			Definition of se_tensor	class, that allows creation of look-up arrays for the self-energy
  * 
  ****************************************************************************************************/
 

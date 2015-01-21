@@ -2,7 +2,12 @@
 /*******************************************************************************************//** @file
  *  		
  * 	file: 		symbase.h
- * 	contents:  	Types and helper functions common to the 1P as well as the 2P Symmetry code
+ * 	contents:  	Types and helper functions and arrays common to the 1P as well as the 2P Symmetry code.
+ * 			Contains class operation that possible operations attached to a symmetry operation
+ * 			(sign change, complex conjugation). Also contains the struct ind_cpl_t that corresponds
+ * 			to an index in the independent coupling vector with attached operations.
+ * 			Other functions and arrays specified here define how to perform certain operations on
+ * 			the frequencies, momenta and the discrete quantum numbers.
  * 
  ****************************************************************************************************/
 
@@ -18,15 +23,13 @@
 class operation : public std::pair<bool,bool>
 {
    public:
-      ///< Constructor taking two bools as argument
-      operation(const bool& first_, const bool& second_)
+      operation(const bool& first_, const bool& second_) ///< Constructor taking two bools as argument
       {
 	 (*this).first = first_ ;
 	 (*this).second = second_;
       }
 
-      ///< Overload multiplication operator for successive application of operations
-      operation  operator*(const operation& b)
+      operation  operator*(const operation& b)	///< Overload multiplication operator for successive application of operations
       {
 	 return operation(  (*this).first xor b.first, (*this).second xor b.second ) ;
       }
@@ -43,27 +46,35 @@ struct ind_cpl_t
    public:
       unsigned int ind;	///< Index in the vector of independent couplings.
       bool checked; 	///< States wether element has been checked for symmetries
+      bool forced_zero;	///< States weather this element is explicitly forced to zero
       operation oper; 	///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
 
-      ///< Default Constructor 
+      /**
+       *	Default Constructor, elements default as forced to zero	
+       */
       ind_cpl_t():
-	 ind(0), checked(false), oper(false, false)
+	 ind(0), checked(false), forced_zero(true), oper(false, false)
    {}
 
-      ///< Constructor int, bool, bool
+      /**
+       *	Constructor int, bool, bool	
+       */
       ind_cpl_t(int ind_ , bool first_ = false , bool second_ = false ):
-	 ind(ind_), checked(true), oper(first_, second_)
+	 ind(ind_), checked(true), forced_zero(false), oper(first_, second_)
    {}
 
-      ///< Constructor int, operation
+      /**
+       *		Constructor (int, operation)
+       */   
       ind_cpl_t(int ind_, operation oper_):
-	 ind(ind_), checked(true), oper(oper_)
+	 ind(ind_), checked(true), forced_zero(false), oper(oper_)
    {}
 };
 
 // Helper functions and necessary arrays
 
 void freq_sign_change(int& ind, const int freq_count);	///< Change sign of signle frequency, MOVE TO FREQUENCY GRID
+void flip_spin(int& ind);		///< Flip single spin index
 void mom_sign_change(int& ind);		///< Change sign of single momentum, MOVE TO MOMENTUM GRID
 void mirror_mom_vert(int& ind);		///< Mirror momentum at vertical axis, MOVE TO MOMENTUM GRID
 void mirror_mom_diag(int& ind);		///< Mirror momentum at diagonal (bottom left to top right) axis, MOVE TO MOMENTUM GRID
@@ -75,5 +86,11 @@ const int sign_change_k_ind_arr[8] = {0, 3, 4, 1, 2, 5, 6, 7}; ///< Array that s
 const int mirror_mom_vert_arr[8] = { 0, 4, 3, 2, 1, 5, 6, 7 }; ///< Array that specifies how to mirror single momentum index at vertical axis
 const int mirror_mom_diag_arr[8] = { 0, 1, 4, 3, 2, 7, 6, 5 }; ///< Array that specifies how to mirror single momentum index at diagonal ( bottom left to top right ) axis
 const int mirror_mom_pipi_arr[8] = { 6, 1, 2, 3, 4, 7, 0, 5 }; ///< Array that specifies how to calculate (pi,pi) - k for single momentum k
+
+/**
+ *	Array that specifies how to add to momenta in the language of the patch indeces
+ */
+const int sum_mom[8][8] = { 	{ 0, 1, 2, 3, 4, 5, 6, 7 }, { 1, 6, 7, 0, 5, 2, 3, 4 }, { 2, 7, 6, 5, 0, 1, 4, 3 }, { 3, 0, 5, 6, 7, 4, 1, 2 }, 
+   { 4, 5, 0, 7, 6, 3, 2, 1 }, { 5, 2, 1, 4, 3, 0, 7, 6 }, { 6, 3, 4, 1, 2, 7, 0, 5 }, { 7, 4, 3, 2, 1, 6, 5, 0 } } ;
 
 #endif 
