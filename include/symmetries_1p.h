@@ -29,11 +29,6 @@ void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& verte
 
 // Symmetries
 operation compl_conj(index_1p_t& ind);		///< Complex conjugation 
-operation time_rev(index_1p_t& ind);		///< Time reversal symmetry
 operation particle_hole(index_1p_t& ind);	///< Particle hole symmetry
-operation spin_symm(index_1p_t& ind);		///< Spin symmetry in nambu notation
-
-operation rot_k(index_1p_t& ind);		///< Rotate all momenta by 90 degrees
-operation mirror_vert(index_1p_t& ind);		///< Mirror all momenta vertically
 
 #endif 
