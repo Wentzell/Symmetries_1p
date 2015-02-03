@@ -25,7 +25,7 @@ void init_symm( std::shared_ptr<se_tensor> se_ptr, std::vector<index_1p_t>& ind_
 /**
  *	Iterate a symmetry on vertex object	
  */
-void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, std::vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos );
+void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& vertex, se_checked_tensor& checked, std::vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos );
 
 // Symmetries
 operation compl_conj(index_1p_t& ind);		///< Complex conjugation 

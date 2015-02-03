@@ -61,4 +61,31 @@ class se_tensor : public boost::multi_array<ind_cpl_t, 4>
    private:
 };
 
+/**
+ *	Class representing the vertex tensor
+ */
+class se_checked_tensor : public boost::multi_array<bool, 4>
+{
+   public:
+      typedef boost::multi_array<bool, 4> super;
+
+      ///< Allow access to elements in tensor by means of index object
+      bool& operator()(index_1p_t& ind)
+      {
+	 return (*this)[ind.w][ind.k][ind.s_in][ind.s_out];
+      }
+
+      ///< Allow access to elements in tensor by specifying all indeces
+      bool& operator()(int w, int k, int s_in, int s_out) 
+      {
+	 return (*this)[w][k][s_in][s_out];
+      }
+
+      ///< Define more convenient constructor
+      se_checked_tensor(int dim_w, int dim_k, int dim_s):
+	 super(boost::extents[dim_w][dim_k][dim_s][dim_s])
+   { std::fill( this->data(), this->data() + this->num_elements(), false); }
+
+   private:
+};
 #endif 

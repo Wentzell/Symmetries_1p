@@ -25,35 +25,39 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
    symm_func_list.push_back(mirror_vert);
 #endif
 
+   se_checked_tensor checked(FREQ_COUNT_SE, PATCH_COUNT, QN_COUNT); 
+
    for(int w = 0; w < FREQ_COUNT_SE; ++w)
       for(int k = 0; k < PATCH_COUNT; ++k)
 	 for(int s_in = 0; s_in < QN_COUNT; ++s_in)
 	    for(int s_out = 0; s_out < QN_COUNT; ++s_out)
 	    {
 	       index_1p_t ind(w, k, s_in, s_out );
-	       if ( !(*se_ptr)(ind).checked )  							// if tensor object not yet related to any other
+	       if ( !checked(ind) )  							// if tensor object not yet related to any other
 	       {
+		  checked(ind) = true; 
 		  ind_cpl_list.push_back(ind);							// push standard representative into ind_cpl_list
 		  int ind_cpl_list_pos =  ind_cpl_list.size() - 1 ; 					// position in ind_cpl_list is size - 1
 		  (*se_ptr)(ind) = ind_cpl_t( ind_cpl_list_pos ); 				// save position with trivial operations
 		  operation track_op(false,false);
-		  iterate( ind, track_op, *se_ptr, symm_func_list, ind_cpl_list_pos ); 		// start iterating on index 
+		  iterate( ind, track_op, *se_ptr, checked, symm_func_list, ind_cpl_list_pos ); 		// start iterating on index 
 	       }
 	    }
 
 
 }
 
-void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& selfEn, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )
+void iterate( const index_1p_t& ind, const operation& track_op, se_tensor& selfEn, se_checked_tensor& checked, vector<symm_func_1p_t> symm_func_list , int ind_cpl_list_pos )
 {
    for(auto symm_func: symm_func_list) 		// iterate over list of all symmetries specified
    {
       index_1p_t ind_it = ind;			// copy ind
       operation curr_op = symm_func(ind_it) * track_op;	// apply symmetry operation and track operations applied
-      if( !selfEn(ind_it).checked )		// if resulting tensor index not yet related to any other
+      if( !checked(ind_it) )		// if resulting tensor index not yet related to any other
       { 
+	 checked(ind_it) = true; 
 	 selfEn(ind_it) = ind_cpl_t(ind_cpl_list_pos, curr_op); 		// relate to position
-	 iterate( ind_it, curr_op, selfEn, symm_func_list, ind_cpl_list_pos );	// iterate further	
+	 iterate( ind_it, curr_op, selfEn, checked, symm_func_list, ind_cpl_list_pos );	// iterate further	
       }
    }
 }

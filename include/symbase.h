@@ -45,7 +45,6 @@ struct ind_cpl_t
 {
    public:
       unsigned int ind;	///< Index in the vector of independent couplings.
-      bool checked; 	///< States wether element has been checked for symmetries
       bool forced_zero;	///< States weather this element is explicitly forced to zero
       operation oper; 	///< Possible operations that relate two tensor elements. First bool indicates possible sign change, second one complex conjugation
 
@@ -53,21 +52,21 @@ struct ind_cpl_t
        *	Default Constructor, elements default as forced to zero	
        */
       ind_cpl_t():
-	 ind(0), checked(false), forced_zero(true), oper(false, false)
+	 ind(0), forced_zero(true), oper(false, false)
    {}
 
       /**
        *	Constructor int, bool, bool	
        */
       ind_cpl_t(int ind_ , bool first_ = false , bool second_ = false ):
-	 ind(ind_), checked(true), forced_zero(false), oper(first_, second_)
+	 ind(ind_), forced_zero(false), oper(first_, second_)
    {}
 
       /**
        *		Constructor (int, operation)
        */   
       ind_cpl_t(int ind_, operation oper_):
-	 ind(ind_), checked(true), forced_zero(false), oper(oper_)
+	 ind(ind_), forced_zero(false), oper(oper_)
    {}
 };
 
