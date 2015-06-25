@@ -19,7 +19,7 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<index_1p_t>& ind_cpl_list )
    symm_func_list.push_back( compl_conj );
    symm_func_list.push_back( time_rev );
    symm_func_list.push_back( particle_hole );
-   symm_func_list.push_back( spin_symm );
+   //symm_func_list.push_back( spin_symm );
 
 #ifndef NO_MOMENTA
    symm_func_list.push_back( rot_k );
