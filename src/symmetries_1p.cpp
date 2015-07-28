@@ -17,14 +17,14 @@ void init_symm( shared_ptr<se_tensor> se_ptr, vector<idx_1p_t>& ind_cpl_list )
    // Initialize vector containing all symmetry functions 
    vector<symm_func_1p_t> symm_func_list; // = { exch_in, exch_out, compl_conj, time_rev, particle_hole, rot_k, mirror_vert, mirror_diag };
 
-   symm_func_list.push_back( compl_conj );
-   symm_func_list.push_back( time_rev );
-   symm_func_list.push_back( particle_hole );
-   symm_func_list.push_back( spin_symm );
+   //symm_func_list.push_back( compl_conj );
+   //symm_func_list.push_back( time_rev );
+   //symm_func_list.push_back( particle_hole );
+   //symm_func_list.push_back( spin_symm );
 
 #ifndef NO_MOMENTA
-   symm_func_list.push_back( rot_k );
-   symm_func_list.push_back( mirror_vert );
+   //symm_func_list.push_back( rot_k );
+   //symm_func_list.push_back( mirror_vert );
 #endif
 
    se_checked_tensor checked( POS_FREQ_COUNT_SE, PATCH_COUNT, QN_COUNT ); 
