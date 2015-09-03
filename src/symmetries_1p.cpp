@@ -92,15 +92,8 @@ operation particle_hole( idx_1p_t& idx )
 
 operation spin_symm( idx_1p_t& idx )
 {
-   freq_sign_change( idx( w ) );
-   
-   swap( idx( s_in ), idx( s_out ) );
-
    flip_spin( idx( s_in ) );
    flip_spin( idx( s_out ) );
-
-   if ( ( idx( s_in ) + !( idx( s_out ) ) ) % 2  != 0 ) // if uneven amount of creation operators minus sign, see masterthesis
-      return operation( true, false );
 
    return operation( false, false );
 }
